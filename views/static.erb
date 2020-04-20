@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title><%= @title %></title>
     <link rel="stylesheet" href="/stylesheets/pure-min.css">
     <link rel="stylesheet" href="/stylesheets/fonts.css">
@@ -20,15 +19,15 @@
 
       <div id="menu">
           <div class="pure-menu">
-              <a class="pure-menu-heading" href="/">Table of Contents</a>
-
+              <a class="pure-menu-heading" href="/">Directory Index</a>
               <ul class="pure-menu-list">
-                <% @chapters.each do |chapter| %>
+                <% @pages.each_index do |page| %>
                 <li class="pure-menu-item">
-                  <a href="#" class="pure-menu-link"><%= chapter%></a>
+                  <a href="<%= url(@pages[page]) %>" class="pure-menu-link">
+                    <%= @ancors[page] %>
+                  </a>
                 </li>
                 <% end %>
-
               </ul>
           </div>
       </div>
@@ -36,16 +35,26 @@
       <div id="main">
         <div class="header">
           <h1><%= @title %></h1>
-          <h2>by Sir Arthur Conan Doyle</h2>
+          <h2>The amazing listing exercise</h2>
         </div>
 
         <div class="content">
-          <h2 class="content-subhead">Chapter Title</h2>
-          <p>
-            <%= @chapert_content %>
-          </p>
+          <h2 class="content-subhead">
+            <a href="<%= "/?order=#{@sorted}" %>" class="pure-menu-link"><%= "Sort in #{@order} order by title" %></a>
+          </h2>
+          <h1>Novels</h1>
 
-
+          <div class="pure-menu">
+              <ul class="pure-menu-list">
+                <% @pages.each_index do |page| %>
+                <li class="pure-menu-item">
+                  <a href="<%= url(@pages[page]) %>" class="pure-menu-link">
+                    <%= @ancors[page] %>
+                  </a>
+                </li>
+                <% end %>
+              </ul>
+          </div>
         </div>
       </div>
   </div>
