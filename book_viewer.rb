@@ -15,6 +15,7 @@ get "/" do
 end
 
 get "/chapter/:number" do
+  @title = "The Adventures of Sherlock Holmes"
   @chapters = []
   file = "data/toc.txt"
   File.open(file) do |file_content|
