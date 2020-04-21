@@ -8,7 +8,6 @@ get "/" do
   @pages = []
   @ancors = []
   Dir.glob "public/*.html" do |file|
-    file_name = File.basename(file)
     @pages << File.basename(file)
     @ancors << File.basename(file, ".*").split("_").join(" ")
   end
