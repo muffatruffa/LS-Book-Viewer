@@ -14,6 +14,14 @@ File.open(file) do |file_content|
   end
 end
 
+helpers do
+  def in_paragraphs(content)
+    content.split(/\n\n/).map do |paragraph|
+      "<p>#{paragraph}</p>"
+    end.join
+  end
+end
+
 get "/" do
   @title = "The Adventures of Sherlock Holmes"
 
