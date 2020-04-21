@@ -2,9 +2,9 @@
 
 <div class="pure-menu">
   <ul class="pure-menu-list">
-    <% @chapters.each do |chapter| %>
+    <% settings.titles.each do |title| %>
     <li class="pure-menu-item">
-      <a href="#" class="pure-menu-link"><%= chapter%></a>
+      <a href="<%= "/chapter/#{title.number}" %>" class="pure-menu-link"><%= title.text %></a>
     </li>
     <% end %>
   </ul>
