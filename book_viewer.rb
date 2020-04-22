@@ -29,9 +29,15 @@ get "/" do
 end
 
 get "/chapter/:number" do
+  max_number = settings.titles.size
+  redirect "/" unless (1..max_number).cover? params[:number].to_i
   @title = "The Adventures of Sherlock Holmes"
 
   @chapert_content = File.read("data/chp#{params[:number]}.txt")
   @chapter_title = settings.titles[params[:number].to_i - 1].text
   erb :chapter
+end
+
+not_found do
+  redirect "/"
 end
