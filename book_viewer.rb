@@ -38,6 +38,27 @@ get "/chapter/:number" do
   erb :chapter
 end
 
+get "/search" do
+  @title = "The Adventures of Sherlock Holmes"
+
+  unless params[:query].nil?
+    @display_search = true
+    @search_result = chapters_with_query(params[:query])
+    @no_match = true if @search_result.empty?
+  end
+
+  erb :search
+end
+
 not_found do
   redirect "/"
+end
+
+def chapters_with_query(target)
+  return [] if target.empty?
+  settings.titles.select { |title| match_found?(title.number, target) }
+end
+
+def match_found?(chapter_number, target)
+  File.read("data/chp#{chapter_number}.txt").include?(target)
 end

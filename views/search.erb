@@ -1,0 +1,23 @@
+<h2 class="content-subhead">Search</h2>
+
+<form action="/search" method="get">
+  <input name="query" value="<%= params[:query] %>">
+  <button type="submit">Search</button>
+</form>
+
+<% if @display_search %>
+  <% if @no_match %>
+    <p>Sorry, no matches were found.</p>
+  <% else %>
+    <h2 class="content-subhead">Results for '<%= params[:query]%>'</h2>
+    <ul class="pure-menu-list">
+      <% @search_result.each do |title| %>
+      <li class="pure-menu-item">
+        <a href="<%= "/chapter/#{title.number}" %>" class="pure-menu-link">
+          <%= title.text %>
+        </a>
+      </li>
+      <% end %>
+    </ul>
+  <% end %>
+<% end %>
