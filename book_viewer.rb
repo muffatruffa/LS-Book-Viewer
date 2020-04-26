@@ -4,9 +4,11 @@ require "tilt/erubis"
 
 set :titles, []
 
+Paragraph = Struct.new(:id, :content)
+Title = Struct.new(:number, :text)
+
 file = "data/toc.txt"
 chapter_number = 1
-Title = Struct.new(:number, :text)
 File.open(file) do |file_content|
   file_content.each_line do |chapter_title|
     settings.titles << Title.new(chapter_number, chapter_title)
@@ -16,9 +18,13 @@ end
 
 helpers do
   def in_paragraphs(content)
-    content.split(/\n\n/).map do |paragraph|
-      "<p>#{paragraph}</p>"
+    content.split(/\n\n/).map.with_index do |paragraph, index|
+      "<p id=\"#{index}\">#{paragraph}</p>"
     end.join
+  end
+
+  def wrap_in_strong(match, content)
+    content.gsub(/#{match}/, "<strong>#{match}</strong>")
   end
 end
 
@@ -56,9 +62,23 @@ end
 
 def chapters_with_query(target)
   return [] if target.empty?
-  settings.titles.select { |title| match_found?(title.number, target) }
+  settings.titles.each_with_object([]) do |title, titles_paragraphs|
+    paragraphs_with_query = []
+    paragraphs = File.read("data/chp#{title.number}.txt").split(/\n\n/)
+    paragraphs.each_index do |paragraph_id|
+      if paragraphs[paragraph_id].include?(target)
+        paragraphs_with_query << Paragraph.new(paragraph_id, paragraphs[paragraph_id])
+      end
+    end
+    titles_paragraphs << [title, paragraphs_with_query] unless paragraphs_with_query.empty?
+  end 
 end
 
-def match_found?(chapter_number, target)
-  File.read("data/chp#{chapter_number}.txt").include?(target)
-end
+# def chapters_with_query(target)
+#   return [] if target.empty?
+#   settings.titles.select { |title| match_found?(title.number, target) }
+# end
+
+# def match_found?(chapter_number, target)
+#   File.read("data/chp#{chapter_number}.txt").include?(target)
+# end

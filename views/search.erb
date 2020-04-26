@@ -11,11 +11,20 @@
   <% else %>
     <h2 class="content-subhead">Results for '<%= params[:query]%>'</h2>
     <ul class="pure-menu-list">
-      <% @search_result.each do |title| %>
+      <% @search_result.each do |title, paragraphs| %>
       <li class="pure-menu-item">
         <a href="<%= "/chapter/#{title.number}" %>" class="pure-menu-link">
           <%= title.text %>
         </a>
+        <ul>
+          <% paragraphs.each do |paragraph| %>
+          <li>
+            <a href="<%= "/chapter/#{title.number}##{paragraph.id}" %>">
+              <%= wrap_in_strong(params[:query], paragraph.content) %>
+            </a>
+          </li>
+          <% end %>
+        </ul>
       </li>
       <% end %>
     </ul>
